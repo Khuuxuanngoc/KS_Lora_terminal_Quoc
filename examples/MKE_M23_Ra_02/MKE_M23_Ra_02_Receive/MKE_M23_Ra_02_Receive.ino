@@ -19,6 +19,11 @@
 
   For full API reference, see the GitHub Pages
   https://jgromes.github.io/RadioLib/
+
+  Hardware that use in this example:
+  - MKE-M23 Ra-02 LoRa Module - https://hshop.vn/mach-mke-m23-ra-02-lora-module-semtech-sx1278-410-525mhz
+  - MKE-K01 ESP32-S3 Dev Kit  - https://hshop.vn/mach-phat-trien-mke-k01-esp32-s3-dev-kit
+
 */
 
 // include the library
@@ -47,14 +52,16 @@ volatile bool receivedFlag = false;
 // IMPORTANT: this function MUST be 'void' type
 //            and MUST NOT have any arguments!
 #if defined(ESP8266) || defined(ESP32)
-  ICACHE_RAM_ATTR
+ICACHE_RAM_ATTR
 #endif
-void setFlag(void) {
+void setFlag(void)
+{
   // we got a packet, set the flag
   receivedFlag = true;
 }
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
 
   // initialize SX1278 at 434 MHz
@@ -62,12 +69,18 @@ void setup() {
   ConfigLoRa_t config;
   config.frequency = 434;
   int state = radio.begin(config);
-  if (state == RADIOLIB_ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE)
+  {
     Serial.println(F("success!"));
-  } else {
+  }
+  else
+  {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true) { delay(10); }
+    while (true)
+    {
+      delay(10);
+    }
   }
 
   // set the function that will be called
@@ -77,12 +90,18 @@ void setup() {
   // start listening for LoRa packets
   Serial.print(F("[SX1278] Starting to listen ... "));
   state = radio.startReceive();
-  if (state == RADIOLIB_ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE)
+  {
     Serial.println(F("success!"));
-  } else {
+  }
+  else
+  {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true) { delay(10); }
+    while (true)
+    {
+      delay(10);
+    }
   }
 
   // if needed, 'listen' mode can be disabled by calling
@@ -95,9 +114,11 @@ void setup() {
   // radio.scanChannel();
 }
 
-void loop() {
+void loop()
+{
   // check if the flag is set
-  if(receivedFlag) {
+  if (receivedFlag)
+  {
     // reset flag
     receivedFlag = false;
 
@@ -112,7 +133,8 @@ void loop() {
       int state = radio.readData(byteArr, numBytes);
     */
 
-    if (state == RADIOLIB_ERR_NONE) {
+    if (state == RADIOLIB_ERR_NONE)
+    {
       // packet was successfully received
       Serial.println(F("[SX1278] Received packet!"));
 
@@ -134,16 +156,17 @@ void loop() {
       Serial.print(F("[SX1278] Frequency error:\t"));
       Serial.print(radio.getFrequencyError());
       Serial.println(F(" Hz"));
-
-    } else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
+    }
+    else if (state == RADIOLIB_ERR_CRC_MISMATCH)
+    {
       // packet was received, but is malformed
       Serial.println(F("[SX1278] CRC error!"));
-
-    } else {
+    }
+    else
+    {
       // some other error occurred
       Serial.print(F("[SX1278] Failed, code "));
       Serial.println(state);
-
     }
   }
 }

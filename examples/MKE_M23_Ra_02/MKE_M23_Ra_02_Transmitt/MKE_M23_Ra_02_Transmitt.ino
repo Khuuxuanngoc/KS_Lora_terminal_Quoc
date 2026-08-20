@@ -15,6 +15,10 @@
 
   For full API reference, see the GitHub Pages
   https://jgromes.github.io/RadioLib/
+
+  Hardware that use in this example: 
+  - MKE-M23 Ra-02 LoRa Module - https://hshop.vn/mach-mke-m23-ra-02-lora-module-semtech-sx1278-410-525mhz
+  - MKE-K01 ESP32-S3 Dev Kit  - https://hshop.vn/mach-phat-trien-mke-k01-esp32-s3-dev-kit
 */
 
 // include the library
